@@ -10,5 +10,6 @@ Browser->Server: HTTP GET ../main.css
 Server-->Browser: main.css
 Browser->Server: HTTP GET ../main.js
 Server-->Browser: main.js
+note left of Browser: When javascript is executed it request the .json file data
 Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
 Server-->Browser: data.json

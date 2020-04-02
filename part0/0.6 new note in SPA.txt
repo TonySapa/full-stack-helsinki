@@ -1,0 +1,7 @@
+title 0.6 new note in SPA
+
+note right of Browser: Write text and click on submit button
+note right of Browser: Event-handler prevent redirect
+Browser->Server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note right of Browser: Data is sent as .JSON file
+Server-->Browser: Status 201
