@@ -1,0 +1,14 @@
+title Creating new note - TonySapa
+
+note left of Browser: Click on submit
+Browser->Server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+Server-->Browser: HTTP status code 302
+Note left of Browser : "Status 302" forces the browser to reload the Referer: HTTP GET request "/notes"
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+Server-->Browser: HTML code
+Browser->Server: HTTP GET ../main.css
+Server-->Browser: main.css
+Browser->Server: HTTP GET ../main.js
+Server-->Browser: main.js
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+Server-->Browser: data.json
