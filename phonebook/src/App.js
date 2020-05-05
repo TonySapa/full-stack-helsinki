@@ -8,13 +8,27 @@ const App = (props) => {
 
   const addperson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName,
-      id: persons.length + 1,
+    console.log(newName);
+
+    var duplicated;
+    for (let i = 0; i < persons.length; i++) {
+      if(persons[i].name === newName) {duplicated = true}
     }
-  
-    setpersons(persons.concat(personObject))
-    setNewName('')
+
+    console.log(`duplicated: ${duplicated}`);
+    
+    if (!duplicated) {
+      const personObject = {
+        id: persons.length + 1,
+        name: newName,
+      }
+    
+      setpersons(persons.concat(personObject))
+      setNewName('')
+      console.log(persons);
+    } else {
+      alert(`${newName} is already added to phonebook`);
+    }
   }
 
   const handlepersonChange = (event) => {
@@ -38,7 +52,6 @@ const App = (props) => {
         </div>
       </form>
       <h2>Numbers</h2>
-      ...
       <ul>
         {persons.map((person, i) => 
           <Person key={i} person={person} />
