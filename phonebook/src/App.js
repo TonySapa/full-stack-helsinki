@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
-
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 
 const App = (props) => {
   const [persons, setpersons] = useState(props.persons)
@@ -15,7 +16,7 @@ const App = (props) => {
 
     var duplicated;
     for (let i = 0; i < persons.length; i++) {
-      if(persons[i].name === newName) {duplicated = true}
+      if(persons[i].name.toLowerCase() === newName.toLowerCase()) {duplicated = true}
     }
 
     console.log(`duplicated: ${duplicated}`);
@@ -54,39 +55,11 @@ const App = (props) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with
-        <input 
-          value={filterName}
-          onChange={handleFilterChange}
-        />
-      </div>
-      <form onSubmit={addperson}>
-        <h2>add a new:</h2>
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={handlepersonChange}
-          />
-        </div>
-        <div>
-          number:
-          <input
-            value={newNumber}
-            onChange={handlenumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter filterName={filterName} handleFilterChange={handleFilterChange} />
+      <h2>add a new:</h2>
+      <PersonForm addperson={addperson} newName={newName} handlepersonChange={handlepersonChange} newNumber={newNumber} handlenumberChange={handlenumberChange}/>
       <h2>Numbers</h2>
-      <ul>
-        {persons.filter(person => person.name.toLowerCase().includes(filterName.toLocaleLowerCase())).map((person, i) => 
-          <Person key={i} person={person} />
-        )}
-      </ul>
+      <Persons persons={persons} filterName={filterName} />
     </div>
   )
 }
