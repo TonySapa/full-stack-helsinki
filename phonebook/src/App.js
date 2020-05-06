@@ -5,10 +5,12 @@ import Person from './components/Person'
 const App = (props) => {
   const [persons, setpersons] = useState(props.persons)
   const [newName, setNewName] = useState('') 
+  const [newNumber, setNewNumber] = useState('')
 
   const addperson = (event) => {
     event.preventDefault()
     console.log(newName);
+    console.log(newNumber);
 
     var duplicated;
     for (let i = 0; i < persons.length; i++) {
@@ -21,10 +23,12 @@ const App = (props) => {
       const personObject = {
         id: persons.length + 1,
         name: newName,
+        number: newNumber
       }
     
       setpersons(persons.concat(personObject))
       setNewName('')
+      setNewNumber('')
       console.log(persons);
     } else {
       alert(`${newName} is already added to phonebook`);
@@ -36,6 +40,11 @@ const App = (props) => {
     setNewName(event.target.value)
   }
 
+  const handlenumberChange = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -45,6 +54,13 @@ const App = (props) => {
           <input
             value={newName}
             onChange={handlepersonChange}
+          />
+        </div>
+        <div>
+          number:
+          <input
+            value={newNumber}
+            onChange={handlenumberChange}
           />
         </div>
         <div>
