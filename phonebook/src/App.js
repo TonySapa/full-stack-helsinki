@@ -83,7 +83,7 @@ const App = (props) => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.filter(person => person.name.includes(filterName)).map((person, i) => 
+        {persons.filter(person => person.name.toLowerCase().includes(filterName.toLocaleLowerCase())).map((person, i) => 
           <Person key={i} person={person} />
         )}
       </ul>
