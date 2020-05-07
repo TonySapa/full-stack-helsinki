@@ -1,7 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
+import axios from 'axios'
 
+
+/*
 const persons = [
   {
     id: 1,
@@ -13,9 +16,6 @@ const persons = [
     name: 'Ada Lovelace',
     number: '+447450626465'
   }
-]
+]*/
 
-ReactDOM.render(
-  <App persons={persons} />,
-  document.getElementById('root')
-)
+ReactDOM.render(<App />, document.getElementById('root'))
