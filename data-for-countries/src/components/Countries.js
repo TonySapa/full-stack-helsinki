@@ -1,7 +1,8 @@
 import React from 'react'
-import Country from './Country'
+import CountryDetail from './CountryDetail'
+import CountryList from './CountryList'
 
-const Countries = ({ countries, filterName }) => {
+const Countries = ({ countries, filterName, filter }) => {
   const filteredResult = countries.filter(country => country.name.toLowerCase().includes(filterName.toLowerCase()));
   console.log(`filtered result size: ${filteredResult.length}`);
 
@@ -12,17 +13,17 @@ const Countries = ({ countries, filterName }) => {
     )
   } else if (filteredResult.length > 1) {
     return (
-      <ul>
+      <>
         {filteredResult.map((country, i) => 
-          <li>{country.name}</li>
+          <CountryList key={i} country={country} filter={filter} />
         )}
-      </ul>
-    )  
+      </>
+  )  
   } else if (filteredResult.length === 1) {
     return (
       <>
         {filteredResult.map((country, i) => 
-          <Country key={i} country={country} />
+          <CountryDetail key={i} country={country} />
         )}
       </>
     )  

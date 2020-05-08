@@ -1,7 +1,7 @@
 import React from 'react'
 import RelevantInfo from './RelevantInfo'
 
-const Country = ({ country }) => {
+const CountryDetail = ({ country }) => {
   return (
     <div>
       <RelevantInfo country={country} />
@@ -9,4 +9,4 @@ const Country = ({ country }) => {
   )
 }
 
-export default Country
+export default CountryDetail

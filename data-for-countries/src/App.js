@@ -6,8 +6,6 @@ import Filter from './components/Filter'
 
 const App = (props) => {
   const [countries, setCountries] = useState([])
-  // const [newName, setNewName] = useState('') 
-  // const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
 
   const hook = () => {
@@ -30,7 +28,7 @@ const App = (props) => {
   return (
     <div>
       <Filter filterName={filterName} handleFilterChange={handleFilterChange} />
-      <Countries countries={countries} filterName={filterName} />
+      <Countries countries={countries} filterName={filterName} filter={handleFilterChange} />
     </div>
   )
 }
