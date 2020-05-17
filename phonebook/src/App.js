@@ -3,13 +3,15 @@ import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import contactsService from './services/contacts'
+import personService from './services/contacts'
+import Notification from './components/Notification'
 
 const App = (props) => {
   const [persons, setpersons] = useState([])
   const [newName, setNewName] = useState('') 
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
+  const [confirmation, setconfirmation] = useState({ text: "", type: "" })
 
   const hook = () => {
     console.log('effect')
@@ -43,21 +45,18 @@ const App = (props) => {
         number: newNumber
       }
       
-      contactsService
+      personService
         .create(personObject)
         .then(returnedPerson => {
           setpersons(persons.concat(returnedPerson))
           setNewName('')
+          setNewNumber('')
         })
-      /*setpersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
-      console.log(persons);*/
     } else {
       alert(`${newName} is already added to phonebook`);
     }
   }
-
+  
   const handlepersonChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -73,14 +72,41 @@ const App = (props) => {
     setFilterName(event.target.value)
   }
 
+  const deleteContact = ({ name, id }) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService
+        .deletePerson(id)
+        .then(() => {
+          setpersons(persons.filter((p) => p.id !== id));
+        })
+        .catch((err) => {
+          showConfirmation(`${name} was already deleted`, "error");
+        });
+    }
+  };
+
+  const showConfirmation = (text, type) => {
+    setconfirmation({
+      text,
+      type,
+    });
+    if (type !== "error") {
+      setTimeout(() => {
+        setconfirmation({ text: "", type: "" });
+      }, 5000);
+    }
+  };
+
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification confirmation={confirmation} />
       <Filter filterName={filterName} handleFilterChange={handleFilterChange} />
       <h2>add a new:</h2>
       <PersonForm addperson={addperson} newName={newName} handlepersonChange={handlepersonChange} newNumber={newNumber} handlenumberChange={handlenumberChange}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} filterName={filterName} />
+      <Persons persons={persons} filterName={filterName} deleteContact={deleteContact} />
     </div>
   )
 }

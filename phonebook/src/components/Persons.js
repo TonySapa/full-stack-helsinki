@@ -1,11 +1,14 @@
 import React from 'react'
-import Person from './Person'
+// import Person from './Person'
 
-const Persons = ({ persons, filterName }) => {
+const Persons = ({ persons, filterName, deleteContact }) => {
   return (
     <ul>
       {persons.filter(person => person.name.toLowerCase().includes(filterName.toLocaleLowerCase())).map((person, i) => 
-        <Person key={i} person={person} />
+      <li key={person.name}>
+        {person.name} {person.number} 
+        <button onClick={() => deleteContact(person)}>Delete</button>
+      </li>
       )}
     </ul>
   )
