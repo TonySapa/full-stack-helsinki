@@ -4,14 +4,17 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import personService from './services/contacts'
-import Notification from './components/Notification'
+import DeleteNotification from './components/DeleteNotification'
+import UpdateNotification from './components/UpdateNotification'
+
 
 const App = (props) => {
   const [persons, setpersons] = useState([])
   const [newName, setNewName] = useState('') 
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
-  const [confirmation, setconfirmation] = useState({ text: "", type: "" })
+  const [deleteConfirmation, setDeleteConfirmation] = useState({ text: "", type: "" })
+  const [updateConfirmation, setUpdateConfirmation] = useState({ text: "", type: "" })
 
   const hook = () => {
     console.log('effect')
@@ -53,7 +56,26 @@ const App = (props) => {
           setNewNumber('')
         })
     } else {
-      alert(`${newName} is already added to phonebook`);
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const personObject = {};
+        for (let i = 0; i < persons.length; i++) {
+          if ((persons[i].name).toLowerCase() === newName.toLowerCase()) {
+            personObject.name = newName;
+            personObject.number = newNumber;
+            personObject.id = persons[i].id;
+          }
+        }
+        console.log('personObject:' + personObject);
+        console.log(`personObject.id: ${personObject.id}`);
+        personService
+        .update(personObject.id, personObject)
+        .then(() => {
+          setpersons((persons.filter((p) => p.id !== personObject.id)).concat(personObject));
+        })
+        .catch((err) => {
+          showUpdateConfirmation(`${personObject.name} was already updated`, "error");
+        });
+      }
     }
   }
   
@@ -80,28 +102,41 @@ const App = (props) => {
           setpersons(persons.filter((p) => p.id !== id));
         })
         .catch((err) => {
-          showConfirmation(`${name} was already deleted`, "error");
+          showDeleteConfirmation(`${name} was already deleted`, "error");
         });
     }
   };
 
-  const showConfirmation = (text, type) => {
-    setconfirmation({
+  const showDeleteConfirmation = (text, type) => {
+    setDeleteConfirmation({
       text,
       type,
     });
     if (type !== "error") {
       setTimeout(() => {
-        setconfirmation({ text: "", type: "" });
+        setDeleteConfirmation({ text: "", type: "" });
       }, 5000);
     }
   };
+
+  const showUpdateConfirmation = (text, type) => {
+    setUpdateConfirmation({
+      text,
+      type,
+    });
+    if (type !== "error") {
+      setTimeout(() => {
+        setUpdateConfirmation({ text: "", type: "" });
+      }, 5000);
+    }
+  }
 
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification confirmation={confirmation} />
+      <DeleteNotification confirmation={deleteConfirmation} />
+      <UpdateNotification confirmation={updateConfirmation} />
       <Filter filterName={filterName} handleFilterChange={handleFilterChange} />
       <h2>add a new:</h2>
       <PersonForm addperson={addperson} newName={newName} handlepersonChange={handlepersonChange} newNumber={newNumber} handlenumberChange={handlenumberChange}/>
