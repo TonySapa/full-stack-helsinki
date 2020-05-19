@@ -6,6 +6,7 @@ import PersonForm from './components/PersonForm'
 import personService from './services/contacts'
 import DeleteNotification from './components/DeleteNotification'
 import UpdateNotification from './components/UpdateNotification'
+import InfoAlert from './components/InfoAlert'
 
 
 const App = (props) => {
@@ -15,6 +16,7 @@ const App = (props) => {
   const [filterName, setFilterName] = useState('')
   const [deleteConfirmation, setDeleteConfirmation] = useState({ text: "", type: "" })
   const [updateConfirmation, setUpdateConfirmation] = useState({ text: "", type: "" })
+  const [infoMessage, setInfoMessage] = useState('')
 
   const hook = () => {
     console.log('effect')
@@ -52,6 +54,12 @@ const App = (props) => {
         .create(personObject)
         .then(returnedPerson => {
           setpersons(persons.concat(returnedPerson))
+          setInfoMessage(
+            `Added '${newName}'`
+          )
+          setTimeout(() => {
+            setInfoMessage(null)
+          }, 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -137,6 +145,7 @@ const App = (props) => {
       <h2>Phonebook</h2>
       <DeleteNotification confirmation={deleteConfirmation} />
       <UpdateNotification confirmation={updateConfirmation} />
+      <InfoAlert message={infoMessage} />
       <Filter filterName={filterName} handleFilterChange={handleFilterChange} />
       <h2>add a new:</h2>
       <PersonForm addperson={addperson} newName={newName} handlepersonChange={handlepersonChange} newNumber={newNumber} handlenumberChange={handlenumberChange}/>
