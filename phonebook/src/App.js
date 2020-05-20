@@ -7,6 +7,7 @@ import personService from './services/contacts'
 import DeleteNotification from './components/DeleteNotification'
 import UpdateNotification from './components/UpdateNotification'
 import InfoAlert from './components/InfoAlert'
+import DeleteInfoAlert from './components/DeleteInfoAlert'
 
 
 const App = (props) => {
@@ -14,9 +15,10 @@ const App = (props) => {
   const [newName, setNewName] = useState('') 
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
-  const [deleteConfirmation, setDeleteConfirmation] = useState({ text: "", type: "" })
+  const deleteConfirmation = useState({ text: "", type: "" })
   const [updateConfirmation, setUpdateConfirmation] = useState({ text: "", type: "" })
   const [infoMessage, setInfoMessage] = useState('')
+  const [deleteInfoMessage, setDeleteInfoMessage] = useState('')
 
   const hook = () => {
     console.log('effect')
@@ -55,7 +57,7 @@ const App = (props) => {
         .then(returnedPerson => {
           setpersons(persons.concat(returnedPerson))
           setInfoMessage(
-            `Added '${newName}'`
+            `Added ${newName}`
           )
           setTimeout(() => {
             setInfoMessage(null)
@@ -79,6 +81,12 @@ const App = (props) => {
         .update(personObject.id, personObject)
         .then(() => {
           setpersons((persons.filter((p) => p.id !== personObject.id)).concat(personObject));
+          setInfoMessage(
+            `Updated ${newName} number`
+          )
+          setTimeout(() => {
+            setInfoMessage(null)
+          }, 5000)
         })
         .catch((err) => {
           showUpdateConfirmation(`${personObject.name} was already updated`, "error");
@@ -108,22 +116,22 @@ const App = (props) => {
         .deletePerson(id)
         .then(() => {
           setpersons(persons.filter((p) => p.id !== id));
+          setInfoMessage(
+            `${name} has been successfully removed`
+          )
+          setTimeout(() => {
+            setInfoMessage(null)
+          }, 5000)
         })
         .catch((err) => {
-          showDeleteConfirmation(`${name} was already deleted`, "error");
+          setpersons(persons.filter((p) => p.id !== id));
+          setDeleteInfoMessage(
+            `Information of ${name} has already been removed from server`
+          )
+          setTimeout(() => {
+            setDeleteInfoMessage(null)
+          }, 5000)
         });
-    }
-  };
-
-  const showDeleteConfirmation = (text, type) => {
-    setDeleteConfirmation({
-      text,
-      type,
-    });
-    if (type !== "error") {
-      setTimeout(() => {
-        setDeleteConfirmation({ text: "", type: "" });
-      }, 5000);
     }
   };
 
@@ -146,6 +154,7 @@ const App = (props) => {
       <DeleteNotification confirmation={deleteConfirmation} />
       <UpdateNotification confirmation={updateConfirmation} />
       <InfoAlert message={infoMessage} />
+      <DeleteInfoAlert message={deleteInfoMessage} />
       <Filter filterName={filterName} handleFilterChange={handleFilterChange} />
       <h2>add a new:</h2>
       <PersonForm addperson={addperson} newName={newName} handlepersonChange={handlepersonChange} newNumber={newNumber} handlenumberChange={handlenumberChange}/>
