@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 var persons = [
   {
     name: "Arto Hellas",
@@ -42,6 +44,12 @@ app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   persons = persons.filter(person => person.id !== id)
   res.status(204).end()
+})
+
+app.post('/api/persons', (req, res) => {
+  const person = req.body
+  console.log(person)
+  res.json(person)
 })
 
 const infoMessage = `<p>Phonebook has info for ${persons.length} people</p>${new Date()}`
