@@ -48,6 +48,28 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const person = req.body
+  if (!person.name && !person.number) {
+    return res.status(400).json({
+      error: 'content missing'
+    })
+  } else if (!person.name) {
+    return res.status(400).json({
+      error: 'name missing'
+    })
+  } else if (!person.number) {
+    return res.status(400).json({
+      error: `${person.name}'s number missing`
+    })
+  }
+  persons.forEach(personItem => {
+    if (personItem.name == person.name) {
+      return res.status(409).json({
+        error: `Duplicated entry: ${person.name} already exists with number ${person.number} and id ${person.id}`
+      })
+    }
+  })
+
+  person.id = Math.floor(10000000000000 * Math.random());
   console.log(person)
   res.json(person)
 })
