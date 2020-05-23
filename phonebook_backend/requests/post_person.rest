@@ -1,8 +1,7 @@
 POST http://localhost:3001/api/persons
-Content-Type: application/json
 
 {
   "name": "Arto Hellas",
-  "number": "940-123456",
+  "number": "4733-123456",
   "id": 1
 }
