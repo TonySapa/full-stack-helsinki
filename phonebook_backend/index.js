@@ -1,8 +1,11 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors')
 app.use(express.json())
 app.use(morgan('tiny'))
+app.use(cors())
+
 
 
 var persons = [
@@ -74,6 +77,7 @@ app.post('/api/persons', (req, res) => {
   person.id = Math.floor(10000000000000 * Math.random());
   console.log(person)
   res.json(person)
+  morgan.token('type', function (req, res) { return req.body['name'] })
 })
 
 const infoMessage = `<p>Phonebook has info for ${persons.length} people</p>${new Date()}`
