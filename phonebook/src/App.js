@@ -23,7 +23,7 @@ const App = (props) => {
   const hook = () => {
     console.log('effect')
     axios
-      .get('http://localhost:3001/api/persons')
+      .get('https://mighty-beach-17427.herokuapp.com/api/persons')
       .then(response => {
         console.log('promise fulfilled')
         setpersons(response.data)

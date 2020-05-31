@@ -13,11 +13,11 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "logs:prod": "heroku logs --tail",
     "eject": "react-scripts eject",
-    "server": "json-server -p3001 --watch db.json"
+    "server": "json-server -p3001 --watch db.json",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,5 +36,6 @@
   },
   "devDependencies": {
     "json-server": "^0.16.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
