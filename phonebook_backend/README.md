@@ -1,1 +1,1 @@
-https://mighty-beach-17427.herokuapp.com/
+https://tsdev-fullstackopen-phonebook.herokuapp.com/

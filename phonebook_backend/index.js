@@ -39,20 +39,15 @@ app.get('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
+/*app.delete('/api/persons/:id', (req, res, next) => {
+  Note.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
+})*/
 
-
-/*
-app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(person => person.id === id)
-  if (person) {
-    res.json(person)
-  } else {
-    res.status(404).end()
-  }
-})
-
-app.delete('/api/persons/:id', (req, res) => {
+/*app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   persons = persons.filter(person => person.id !== id)
   res.status(204).end()
@@ -85,8 +80,26 @@ app.post('/api/persons', (req, res) => {
   console.log(person)
   res.json(person)
   morgan.token('type', function (req, res) { return req.body['name'] })
+})*/
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+
+  if (body.name === undefined) {
+    return res.status(400).json({ error: 'content missing' })
+  }
+
+  const person = new Person({
+    name: body.name,
+    number: body.number || false,
+  })
+
+  person.save().then(savedPerson => {
+    res.json(savedPerson.toJSON())
+  })
 })
 
+/*
 const infoMessage = `<p>Phonebook has info for ${persons.length} people</p>${new Date()}`
 
 
