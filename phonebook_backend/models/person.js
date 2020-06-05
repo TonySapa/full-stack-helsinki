@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false)
 require('dotenv').config()
 
 const url = process.env.MONGODB_URI

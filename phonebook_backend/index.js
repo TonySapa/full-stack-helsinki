@@ -39,13 +39,13 @@ app.get('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-/*app.delete('/api/persons/:id', (req, res, next) => {
-  Note.findByIdAndRemove(req.params.id)
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
     .then(result => {
       res.status(204).end()
     })
     .catch(error => next(error))
-})*/
+})
 
 /*app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
