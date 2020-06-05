@@ -5,7 +5,7 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   const nonExisting = {
     id: 10000,
-    name: 'This note is not saved to server',
+    name: 'This number is not saved to server',
     number: '601512398',
   }
   return request.then(response => response.data.concat(nonExisting))

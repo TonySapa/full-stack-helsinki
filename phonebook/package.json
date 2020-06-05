@@ -13,6 +13,7 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
+    "build": "react-scripts build",
     "logs:prod": "heroku logs --tail",
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json",
