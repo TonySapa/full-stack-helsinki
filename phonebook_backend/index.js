@@ -1,41 +1,47 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const bodyParser = require('body-parser')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/person')
+const PORT = process.env.PORT
+const url = process.env.MONGODB_URI
+require('dotenv').config()
+app.use(bodyParser.json())
 app.use(express.static('build'))
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(cors())
 
 
-
-var persons = [
-  {
-    name: "Arto Hellas",
-    number: "040-123456",
-    id: 1
-  },
-  {
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-    id: 2
-  },
-  {
-    name: "Dan Abramov",
-    number: "12-43-234345",
-    id: 3
-  },
-  {
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-    id: 4
-  }
-]
+/*app.get('/api/persons', (req, res) => {
+  Person.find({}).then(persons => {
+    res.json(persons)
+  })
+})*/
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(persons => {
+    res.json(persons.map(person => person.toJSON()))
+  })
 })
 
+app.get('/api/persons/:id', (req, res, next) => {
+  Person.findById(req.params.id)
+    .then(person => {
+      if (person) {
+        res.json(person.toJSON())
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => next(error))
+})
+
+
+
+/*
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   const person = persons.find(person => person.id === id)
@@ -87,8 +93,8 @@ const infoMessage = `<p>Phonebook has info for ${persons.length} people</p>${new
 app.get('/info', (req, res) => {
   res.send(infoMessage)
 })
+*/
 
-const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
