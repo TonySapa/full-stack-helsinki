@@ -99,6 +99,25 @@ app.post('/api/persons', (req, res) => {
   })
 })
 
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    return res.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
+
+
 /*
 const infoMessage = `<p>Phonebook has info for ${persons.length} people</p>${new Date()}`
 
