@@ -8,6 +8,7 @@ import DeleteNotification from './components/DeleteNotification'
 import UpdateNotification from './components/UpdateNotification'
 import InfoAlert from './components/InfoAlert'
 import DeleteInfoAlert from './components/DeleteInfoAlert'
+import { getNodeText } from '@testing-library/react'
 
 
 const App = (props) => {
@@ -65,7 +66,17 @@ const App = (props) => {
           setNewName('')
           setNewNumber('')
         })
-    } else {
+        .catch(error => {
+          console.log(JSON.stringify(error.response.data));
+          setDeleteInfoMessage(
+            `${JSON.stringify(error.response.data)}`
+          )
+          setTimeout(() => {
+            setDeleteInfoMessage(null)
+          }, 5000)
+        })
+
+    } else if (duplicated) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const personObject = {};
         for (let i = 0; i < persons.length; i++) {
