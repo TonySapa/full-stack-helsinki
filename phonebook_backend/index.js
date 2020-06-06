@@ -4,6 +4,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 const Person = require('./models/person')
 const PORT = process.env.PORT
 const url = process.env.MONGODB_URI
@@ -82,7 +83,7 @@ app.post('/api/persons', (req, res) => {
   morgan.token('type', function (req, res) { return req.body['name'] })
 })*/
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (body.name === undefined) {
@@ -94,11 +95,14 @@ app.post('/api/persons', (req, res) => {
     number: body.number || false,
   })
 
-  person.save().then(savedPerson => {
-    res.json(savedPerson.toJSON())
-  })
+  person.save()
+  .then(savedPerson => savedPerson.toJSON())
+  .then(savedAndFormattedPerson => {
+    res.json(savedAndFormattedPerson)
+  }) 
+  .catch(error => next(error))
 })
-
+  
 app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
 
@@ -126,7 +130,9 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if (error.name === 'ValidationError') {
+    return res.status(409).json({ error: error.message })
+  }
 
   next(error)
 }
