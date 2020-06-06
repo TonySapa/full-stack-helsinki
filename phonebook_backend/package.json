@@ -11,6 +11,7 @@
   "author": "Antoni Sanchez Palacios",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^7.2.0",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
