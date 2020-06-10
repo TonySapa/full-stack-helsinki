@@ -17,27 +17,37 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const personSchema = new mongoose.Schema({
-  name: {
+const blogSchema = new mongoose.Schema({
+  title: {
     type: String,
-    unique: true,
-    minlength: 3
+    unique: false,
+    // minlength: 3
   },
-  number: {
+  author: {
     type: String,
-    minlength: 8
+    unique: false,
+    // minlength: 3
   },
-  id: String,
+  url: {
+    type: String,
+    unique: false,
+    // minlength: 3
+  },
+  likes: {
+    type: Number,
+    unique: false,
+    // minlength: 3
+  }
 })
 
-personSchema.set('toJSON', {
+blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
   }
 })
-personSchema.plugin(uniqueValidator)
+blogSchema.plugin(uniqueValidator)
 
 
-module.exports = mongoose.model('Person', personSchema)
+module.exports = mongoose.model('Blog', blogSchema)
