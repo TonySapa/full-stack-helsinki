@@ -73,4 +73,14 @@ describe('total likes', () => {
     const result = listHelper.totalLikes(blogs)
     expect(result).toBe(36)
   })
+
+  test('Maximum numbers of likes given to a blog', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toBe(12)
+  })
+
+  test('favorite blog, returns object', () => {
+    const result = listHelper.favorite(blogs)
+    expect(result).toBe(JSON.stringify(blogs[2]))
+  })
 })
