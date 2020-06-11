@@ -6,6 +6,8 @@ const blogsRouter = require('./controllers/blog')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+var _ = require('lodash')
+
 
 logger.info('connecting to', config.MONGODB_URI)
 

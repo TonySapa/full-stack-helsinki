@@ -81,6 +81,16 @@ describe('total likes', () => {
 
   test('favorite blog, returns object', () => {
     const result = listHelper.favorite(blogs)
-    expect(result).toBe(JSON.stringify(blogs[2]))
+    expect(result).toEqual(JSON.stringify(blogs[2]))
+  })
+
+  test('The author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(JSON.stringify(
+      {
+        author: "Robert C. Martin",
+        blogs: 3
+      }
+    ))
   })
 })

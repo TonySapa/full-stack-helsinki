@@ -1,3 +1,5 @@
+var _ = require('lodash')
+
 const dummy = (blogs) => {
   return 1
 }
@@ -22,13 +24,36 @@ const favorite = (blogs) => {
     fav = blog
   }
   blogs.map(blog => blog.likes > max ? setFav(blog) : null)
-  console.log('fav blog' + JSON.stringify(fav));
+  console.log(`favorite blog is ${JSON.stringify(fav)}`)
   return JSON.stringify(fav)
+}
+
+const mostBlogs = (blogs) => {
+  var mostFrequent = {
+    author: '',
+    blogs: 0
+  }
+  let authors = []
+  const compare = (author) => {
+    let x = 0
+    authors.push(author)
+    authors.map(authorB => (authorB === author) ? x++ : null)
+    console.log(`${author} is included in authors ${x} times`)
+    if (x > mostFrequent.blogs) {
+      mostFrequent.blogs = x
+      mostFrequent.author = author
+    }
+  }
+  blogs.map(blog => compare(blog.author))
+  console.log(`*** ${mostFrequent.author} times: ${mostFrequent.blogs}`)
+  
+  return JSON.stringify(mostFrequent)
 }
 
 module.exports = {
   dummy,
   totalLikes,
   mostLikes,
-  favorite
+  favorite,
+  mostBlogs
 }
