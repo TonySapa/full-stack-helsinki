@@ -10,7 +10,7 @@ const totalLikes = (blogs) => {
   return likes
 }
 
-const mostLikes = (blogs) => {
+const mostLikedBlog = (blogs) => {
   let max = 0
   blogs.map(blog => blog.likes > max ? max = blog.likes : null)
   return max
@@ -24,36 +24,64 @@ const favorite = (blogs) => {
     fav = blog
   }
   blogs.map(blog => blog.likes > max ? setFav(blog) : null)
-  console.log(`favorite blog is ${JSON.stringify(fav)}`)
+  // console.log(`favorite blog is ${JSON.stringify(fav)}`)
   return JSON.stringify(fav)
 }
 
 const mostBlogs = (blogs) => {
-  var mostFrequent = {
-    author: '',
-    blogs: 0
-  }
-  let authors = []
+  var mostFrequent = { author: '', blogs: 0 };
+  let authors = [];
   const compare = (author) => {
     let x = 0
     authors.push(author)
     authors.map(authorB => (authorB === author) ? x++ : null)
-    console.log(`${author} is included in authors ${x} times`)
+    // console.log(`${author} is included in authors ${x} times`)
     if (x > mostFrequent.blogs) {
       mostFrequent.blogs = x
       mostFrequent.author = author
     }
   }
   blogs.map(blog => compare(blog.author))
-  console.log(`*** ${mostFrequent.author} times: ${mostFrequent.blogs}`)
+  // console.log(`*** ${mostFrequent.author} times: ${mostFrequent.blogs}`)
   
   return JSON.stringify(mostFrequent)
+}
+
+const mostLikes = (blogs) => {
+  var authors = [];
+  var topLiked = { author: '', likes: 0 };
+
+  blogs.map(blog => {
+    // console.log(`-> Position: Blog ${JSON.stringify(blog)}`);
+    let included = false;
+    const updateLikes = (writer, likes) => {
+      writer.likes = likes;
+    }
+    authors.map(authorB => {
+      if (authorB.author === blog.author) {
+        // console.log(`-> ${blog.author} is included on authors[] with '${blog.likes}' likes`);
+        included = true;
+        let likes = authorB.likes + blog.likes;
+        updateLikes(authorB, likes);
+        // console.log(`-> ${blog.author} had ${authorB.likes} likes + ${blog.likes} has now '${likes}' likes`);
+        (likes > topLiked.likes) ? (topLiked.likes = topLiked.likes + likes, topLiked.author = authorB.author) : null
+      }
+    })
+    if (included) {
+      included = false;
+    } else {
+      authors.push(blog);
+      // console.log(`-> Added ${blog.author} to authors[]`);
+    }
+  })
+  // authors.map(author => console.log(`${JSON.stringify(author.author)}, likes: ${JSON.stringify(author.likes)}`));
+  return JSON.stringify(topLiked);
 }
 
 module.exports = {
   dummy,
   totalLikes,
-  mostLikes,
   favorite,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
