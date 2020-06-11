@@ -67,12 +67,8 @@ const mostLikes = (blogs) => {
         (likes > topLiked.likes) ? (topLiked.likes = topLiked.likes + likes, topLiked.author = authorB.author) : null
       }
     })
-    if (included) {
-      included = false;
-    } else {
-      authors.push(blog);
+    (included) ? included = false : authors.push(blog);
       // console.log(`-> Added ${blog.author} to authors[]`);
-    }
   })
   // authors.map(author => console.log(`${JSON.stringify(author.author)}, likes: ${JSON.stringify(author.likes)}`));
   return JSON.stringify(topLiked);
