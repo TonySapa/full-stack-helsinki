@@ -72,6 +72,19 @@ test('If likes are not specified, likes equal 0', async () => {
   expect(titles).toContain('Overreacted')
 })
 
+test('If title or url is missing respond with 400', async () => {
+  const newBlog = {
+    url:'https://titleandauthormissing.com'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length)
+})
 
 
 afterAll(() => {
