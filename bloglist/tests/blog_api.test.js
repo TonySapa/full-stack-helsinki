@@ -52,6 +52,28 @@ test('HTTP POST request to /api/blogs creates a new blog post', async () => {
   expect(titles).toContain('Overreacted')
 })
 
+test('If likes are not specified, likes equal 0', async () => {
+  const newBlog = {
+    title: 'Not specified likes',
+    author: 'Toni Sánchez',
+    url: 'https://tonisanchez.dev'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(b => b.title)
+  expect(titles).toContain('Overreacted')
+})
+
+
+
 afterAll(() => {
   mongoose.connection.close()
 })
