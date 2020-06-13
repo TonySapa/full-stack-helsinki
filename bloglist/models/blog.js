@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-mongoose.set('useCreateIndex', true)
+// mongoose.set('useCreateIndex', true)
 const uniqueValidator = require('mongoose-unique-validator');
-mongoose.set('useFindAndModify', false)
+/*mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 require('dotenv').config()
 
@@ -15,27 +15,31 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   })
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message)
-  })
+  })*/
 
 const blogSchema = new mongoose.Schema({
   title: {
     type: String,
     unique: false,
+    required: true
     // minlength: 3
   },
   author: {
     type: String,
     unique: false,
+    required: true
     // minlength: 3
   },
   url: {
     type: String,
     unique: false,
+    required: true
     // minlength: 3
   },
   likes: {
     type: Number,
     unique: false,
+    required: true
     // minlength: 3
   }
 })
