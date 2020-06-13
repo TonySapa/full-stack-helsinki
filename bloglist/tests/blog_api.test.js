@@ -103,6 +103,22 @@ test('Delete a single note', async () => {
   expect(titles).not.toContain(blogToDelete.title)
 })
 
+test('Single update is successful', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+  const newBlog = {
+    title: 'Overreacted has been modified',
+    author: 'Dan Abramov',
+    url: 'https://overreacted.io/',
+    likes: 33
+  }
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(newBlog)
+    .expect(200)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
