@@ -41,6 +41,10 @@ const blogSchema = new mongoose.Schema({
     unique: false,
     required: false
     // minlength: 3
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
