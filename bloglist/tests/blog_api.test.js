@@ -174,7 +174,7 @@ describe('when there is initially one user in db', () => {
   })
 
 
-  test('User not created if length < 3', async () => {
+  test('User not created if username length < 3', async () => {
     const usersAtStart = await helper.usersInDb()
   
     const newUser = {
@@ -195,7 +195,26 @@ describe('when there is initially one user in db', () => {
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
   
-
+  test('User not created if password length < 3', async () => {
+    const usersAtStart = await helper.usersInDb()
+  
+    const newUser = {
+      username: 'testuser99',
+      name: 'any name',
+      password: 'ab'
+    }
+  
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  
+    expect(result.body.error).toContain('password must be at least 3 characters')
+  
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
 })
 
 afterAll(() => {
