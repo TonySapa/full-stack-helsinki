@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Without token.",
+  "author": "Pepe Navarro",
+  "url": "http://www.webinventada.com",
+  "userId": "5ee61dc8b59fe1e1b98ab208"
+}

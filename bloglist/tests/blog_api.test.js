@@ -32,6 +32,26 @@ test('the unique identifier property of the blog posts is named id', async () =>
   })
 })
 
+test('Posting blog without token fails', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+
+  const newBlog = {
+    title: "notoken",
+    author: "Mr.Notoken",
+    url: "https://post-without-tokens.com",
+    likes: 1
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+    .expect(result.body.error).toContain('invalid or expired token')
+  
+    const usersAtEnd = await helper.blogsInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+})
+
 test('HTTP POST request to /api/blogs creates a new blog post', async () => {
   const newBlog = {
     title: 'Blog added when testing',
@@ -216,6 +236,8 @@ describe('when there is initially one user in db', () => {
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
 })
+
+
 
 afterAll(() => {
   mongoose.connection.close()

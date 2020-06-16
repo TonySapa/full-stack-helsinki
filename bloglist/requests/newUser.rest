@@ -2,6 +2,6 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-  "username": "usertestDelete",
-  "password": "av"
+  "username": "abcddefef",
+  "password": "ab"
 }
