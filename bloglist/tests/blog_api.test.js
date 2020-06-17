@@ -42,14 +42,15 @@ test('Posting blog without token fails', async () => {
     likes: 1
   }
 
-  await api
+  const result = await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(401)
-    .expect(result.body.error).toContain('invalid or expired token')
+    
+    expect(result.body.error).toContain('invalid or expired token')
   
-    const usersAtEnd = await helper.blogsInDb()
-    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
 })
 
 test('HTTP POST request to /api/blogs creates a new blog post', async () => {

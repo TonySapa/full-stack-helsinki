@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJUZXN0MyIsImlkIjoiNWVlNzgwYWE3MTczNzYzODY0MWNjNzExIiwiaWF0IjoxNTkyMzI1NDA5fQ.zgs2twMZFrDHXR0HVJn3xu5pcXoQl4Ag-uX5thTDJmQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJUZXN0MyIsImlkIjoiNWVlNzgwYWE3MTczNzYzODY0MWNjNzExIiwiaWF0IjoxNTkyNDI3NzA1fQ.qiXn436WTMs3goPv1QqZ79FWI8L3AhiX65MHxZNLXWs
 
 {
-  "title": "With token. Testing post with user4",
-  "author": "Pepe Navarro",
+  "title": "With token. 17.06.20-13:06",
+  "author": "Toni Flaco",
   "url": "http://www.webinventada.com",
   "userId": "5ee61dc8b59fe1e1b98ab208"
 }

@@ -31,19 +31,21 @@ const getTokenFrom = request => {
   return null
 }
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
   const token = getTokenFrom(request)
   var decodedToken;
   try {
     decodedToken = jwt.verify(token, process.env.SECRET)
   } catch (error) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+    return response.status(401).json({ error: 'invalid or expired token' })
   }
   if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+    return response.status(401).json({ error: 'invalid or expired token' })
   }
+
   const user = await User.findById(decodedToken.id)
+
 
   let likes = '';
   (body.likes) ? likes = body.likes : likes = 0;
@@ -62,6 +64,7 @@ blogsRouter.post('/', async (request, response) => {
 
   response.json(savedBlog.toJSON())
 })
+
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   const token = getTokenFrom(request)
