@@ -1,6 +1,6 @@
 <h1>Fullstack Open 2020</h1>
 <p>Repository of my submissions for the University of Helsinki 9 ECTS course.</p>
-<img src="__ignore__/img/FullstackOpen - University of Helsinki - Antoni Sánchez Palacios (1).png" alt="certificate" width="800">
+<img src="__ignore__/img/FullstackOpen - University of Helsinki - Antoni Sánchez Palacios 2.png" alt="certificate" width="800">
 <br>
 <a href="https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/8370cd299efefdfb7b5c419b06ff9595" target="_blank">Verify</a>
 <br>
