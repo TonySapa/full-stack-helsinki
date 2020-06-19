@@ -19,6 +19,15 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
@@ -42,7 +51,10 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-
+      window.localStorage.setItem(
+        'loggedBloglistUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -52,6 +64,15 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLogout = (event) => {
+    event.preventDefault()
+    window.localStorage.removeItem('loggedBloglistUser')
+    blogService.setToken('')
+    setUser(null)
+    setUsername('')
+    setPassword('')
   }
 
   const handleBlogChange = (event) => {
@@ -64,7 +85,7 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -73,7 +94,7 @@ const App = () => {
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -83,6 +104,10 @@ const App = () => {
         <button type="submit">login</button>
       </form>
     </div>    
+  )
+
+  const logOut = () => (
+    <button onClick={handleLogout}>logout</button>
   )
 
   const blogForm = () => (
@@ -101,8 +126,10 @@ const App = () => {
         loginForm() :
         <div>
           <h1>blogs</h1>
-          <p>{user.name} logged in</p>
-          {blogForm()}
+          <p>
+            {user.name} logged in
+            {logOut()}
+          </p>
           <ul>
             {blogs.map((blog, i) => 
               <Blog
