@@ -15,6 +15,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [infoMessage, setInfoMessage] = useState('')
+  const [dangerMessage, setDangerMessage] = useState('')
 
 
   useEffect(() => {
@@ -71,9 +72,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setDangerMessage('wrong username or password')
       setTimeout(() => {
-        setErrorMessage(null)
+        setDangerMessage(null)
       }, 5000)
     }
   }
@@ -100,6 +101,7 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h1>log in to application</h1>
+      <DangerAlert message={dangerMessage} />
       <form onSubmit={handleLogin}>
         <div>
           username
