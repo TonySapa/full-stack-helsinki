@@ -5,7 +5,9 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([]) 
-  const [newBlog, setNewBlog] = useState('')
+  const [newTitle, setnewTitle] = useState('')
+  const [newAuthor, setnewAuthor] = useState('')
+  const [newUrl, setnewUrl] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
@@ -31,17 +33,17 @@ const App = () => {
   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
-      content: newBlog,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5,
-      id: blogs.length + 1,
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl,
+      // id: blogs.length + 1,
     }
   
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNewBlog('')
+        setnewTitle('')
       })
   }
 
@@ -75,8 +77,14 @@ const App = () => {
     setPassword('')
   }
 
-  const handleBlogChange = (event) => {
-    setNewBlog(event.target.value)
+  const handleTitleChange = (event) => {
+    setnewTitle(event.target.value)
+  }
+  const handleAuthorChange = (event) => {
+    setnewAuthor(event.target.value)
+  }
+  const handleUrlChange = (event) => {
+    setnewUrl(event.target.value)
   }
 
   const loginForm = () => (
@@ -111,13 +119,33 @@ const App = () => {
   )
 
   const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <input
-        value={newBlog}
-        onChange={handleBlogChange}
-      />
-      <button type="submit">save</button>
-    </form>  
+    <div>
+      <h1>create new</h1>
+      <form onSubmit={addBlog}>
+        <div>
+          title:
+          <input
+            value={newTitle}
+            onChange={handleTitleChange}
+          />
+        </div>
+        <div>
+          author:
+          <input
+            value={newAuthor}
+            onChange={handleAuthorChange}
+          />
+        </div>
+        <div>
+          url:
+          <input
+            value={newUrl}
+            onChange={handleUrlChange}
+          />
+        </div>
+        <button type="submit">save</button>
+      </form>
+    </div>
   )
 
   return (
@@ -130,14 +158,13 @@ const App = () => {
             {user.name} logged in
             {logOut()}
           </p>
-          <ul>
-            {blogs.map((blog, i) => 
-              <Blog
-                key={i}
-                blog={blog} 
-              />
-            )}
-          </ul>
+          {blogForm()}
+          {blogs.map((blog, i) => 
+            <Blog
+              key={i}
+              blog={blog} 
+            />
+          )}
         </div>
       }
     </div>
