@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import InfoAlert from './components/InfoAlert'
+import DangerAlert from './components/DangerAlert'
 import blogService from './services/blogs'
 import loginService from './services/login' 
 
@@ -12,6 +14,8 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [infoMessage, setInfoMessage] = useState('')
+
 
   useEffect(() => {
     blogService
@@ -35,7 +39,7 @@ const App = () => {
     const blogObject = {
       title: newTitle,
       author: newAuthor,
-      url: newUrl,
+      url: newUrl
       // id: blogs.length + 1,
     }
   
@@ -43,7 +47,13 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setInfoMessage(`a new blog ${newTitle} added`)
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
         setnewTitle('')
+        setnewAuthor('')
+        setnewUrl('')
       })
   }
 
@@ -153,6 +163,7 @@ const App = () => {
       {user === null ?
         loginForm() :
         <div>
+          <InfoAlert message={infoMessage} />
           <h1>blogs</h1>
           <p>
             {user.name} logged in
