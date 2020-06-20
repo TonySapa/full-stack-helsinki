@@ -1,9 +1,10 @@
 import React from 'react'
 import Togglable from './Togglable'
+import LikeButton from './LikeButton'
 
 const blogFormRef = React.createRef()
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, updateBlog, id, blogObject }) => {
   const BlogStyle1 = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -21,7 +22,11 @@ const Blog = ({ blog, user }) => {
           {blog.url}
         </div>
         <div>
-          {blog.likes}
+          Likes: {blog.likes} 
+          <LikeButton 
+            buttonLabel='like' blog={blog} updateBlog={updateBlog} 
+            id={id} blogObject={blogObject}
+          />
         </div>
         <div>
           {user}

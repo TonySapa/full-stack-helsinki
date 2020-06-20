@@ -109,6 +109,16 @@ const App = () => {
       })
   }
 
+  const addLike = async (id, blogObject) => {
+    blogService
+      .update(id, blogObject)
+    blogService
+      .getAll()
+      .then(returnedBlogs => {
+        setBlogs(returnedBlogs)
+      })
+
+  }
 
   const logOut = () => (
     <button onClick={handleLogout}>logout</button>
@@ -140,6 +150,7 @@ const App = () => {
               key={i}
               blog={blog}
               user={user.name}
+              updateBlog={addLike}
             />
           )}
         </div>
