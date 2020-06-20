@@ -8,7 +8,8 @@ import blogService from './services/blogs'
 import loginService from './services/login' 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]) 
+  const [blogs, setBlogs] = useState([])
+  const [users, setUsers] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -23,6 +24,15 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    blogService
+      .getAll()
+      .then(initialBlogs => {
+        initialBlogs.map(blog => {
+        users.concat(blog.user)
+      })})
+    }, [])
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
@@ -107,7 +117,7 @@ const App = () => {
   const blogFormRef = React.createRef()
 
   const blogForm = () => (
-    <Togglable buttonLabel='new note' ref={blogFormRef}>
+    <Togglable buttonLabel='new note' buttonLabel2='cancel' ref={blogFormRef}>
       <BlogForm createBlog={addBlog} />
     </Togglable>
   )
@@ -128,7 +138,8 @@ const App = () => {
           {blogs.map((blog, i) => 
             <Blog
               key={i}
-              blog={blog} 
+              blog={blog}
+              user={user.name}
             />
           )}
         </div>
