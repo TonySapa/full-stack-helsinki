@@ -114,6 +114,31 @@ const App = () => {
       })
   }
 
+  const eraseBlog = (title, id) => {
+    if (window.confirm(`Delete ${title}?`)) {
+      blogService
+        .remove(id)
+        .then(() => {
+          setBlogs(blogs.filter((b) => b.id !== id));
+          setInfoMessage(
+            `${title} has been successfully removed`
+          )
+          setTimeout(() => {
+            setInfoMessage(null)
+          }, 5000)
+        })
+        .catch((err) => {
+          setBlogs(blogs.filter((b) => b.id !== id));
+          setDangerMessage(
+            `Information of ${title} has already been removed from server`
+          )
+          setTimeout(() => {
+            setDangerMessage(null)
+          }, 5000)
+        });
+    }
+  }
+
   const addLike = async (id, blogObject) => {
     blogService
       .update(id, blogObject)
@@ -137,6 +162,9 @@ const App = () => {
     </Togglable>
   )
 
+  const getBlogUser = (blog) => {
+    return (blog.user) ? blog.user.name : ' '
+  }
 
   return (
     <div>
@@ -152,10 +180,14 @@ const App = () => {
           {blogForm()}
           {blogs.map((blog, i) => 
             <Blog
+              sessionUser={user.name}
               key={i}
               blog={blog}
-              user={user.name}
+              id={blog.id}
+              user={getBlogUser(blog)}
               updateBlog={addLike}
+              eraseBlog={eraseBlog}
+              title={blog.title}
             />
           )}
         </div>

@@ -24,7 +24,7 @@ const LikeButton = ({
       setInfoMessage(null)
     }, 5000)*/
   }
-  console.log(`blog: ${JSON.stringify(blog)}`);
+  // console.log(`blog: ${JSON.stringify(blog)}`);
 
   return (
     <button onClick={addLike}>{buttonLabel}</button>
