@@ -16,11 +16,15 @@ const App = () => {
   const [infoMessage, setInfoMessage] = useState(null)
   const [dangerMessage, setDangerMessage] = useState(null)
 
+  function compareNumbers(a, b) {
+    return b.likes - a.likes;
+  }
+
   useEffect(() => {
     blogService
       .getAll()
       .then(initialBlogs => {
-        setBlogs(initialBlogs)
+        setBlogs(initialBlogs.sort(compareNumbers))
       })
   }, [])
 
@@ -41,6 +45,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+  
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -115,7 +120,7 @@ const App = () => {
     blogService
       .getAll()
       .then(returnedBlogs => {
-        setBlogs(returnedBlogs)
+        setBlogs(returnedBlogs.sort(compareNumbers))
       })
 
   }
