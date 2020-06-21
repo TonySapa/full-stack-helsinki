@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 const LikeButton = ({
   blog,
@@ -29,6 +30,10 @@ const LikeButton = ({
   return (
     <button onClick={addLike}>{buttonLabel}</button>
   )
+}
+
+LikeButton.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
 }
 
 export default LikeButton

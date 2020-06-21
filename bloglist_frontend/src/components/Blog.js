@@ -13,7 +13,7 @@ const Blog = ({ sessionUser, blog, user, updateBlog, eraseBlog, blogObject }) =>
     borderWidth: 1,
     marginBottom: 5
   }
-  console.log(`blog.id: ${blog.id} and typeof: ${typeof blog.id}`);
+  //console.log(`blog.id: ${blog.id} and typeof: ${typeof blog.id}`);
   return (
     <div style={BlogStyle1}>
       {blog.title} {blog.author}
