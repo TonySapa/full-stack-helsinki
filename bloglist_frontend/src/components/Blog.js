@@ -1,7 +1,6 @@
 import React from 'react'
 import Togglable from './Togglable'
 import LikeButton from './LikeButton'
-import RemoveButton from './RemoveButton'
 
 const blogFormRef = React.createRef()
 
@@ -22,9 +21,9 @@ const Blog = ({ sessionUser, blog, user, updateBlog, eraseBlog, blogObject }) =>
           {blog.url}
         </div>
         <div>
-          Likes: {blog.likes} 
-          <LikeButton 
-            buttonLabel='like' blog={blog} updateBlog={updateBlog} 
+          Likes: {blog.likes}
+          <LikeButton
+            buttonLabel='like' blog={blog} updateBlog={updateBlog}
             id={blog.id} blogObject={blogObject}
           />
         </div>
@@ -32,11 +31,10 @@ const Blog = ({ sessionUser, blog, user, updateBlog, eraseBlog, blogObject }) =>
           {user}
         </div>
         {user === sessionUser
-        ? <button onClick={() => eraseBlog(blog.title, blog.id)}>remove</button>
-        : null
+          ? <button onClick={() => eraseBlog(blog.title, blog.id)}>remove</button>
+          : null
         }
-        
-    </Togglable>
+      </Togglable>
     </div>
   )
 }

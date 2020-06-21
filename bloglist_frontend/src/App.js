@@ -5,19 +5,19 @@ import Togglable from './components/Togglable'
 import InfoAlert from './components/InfoAlert'
 import DangerAlert from './components/DangerAlert'
 import blogService from './services/blogs'
-import loginService from './services/login' 
+import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [users, setUsers] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [infoMessage, setInfoMessage] = useState(null)
   const [dangerMessage, setDangerMessage] = useState(null)
 
   function compareNumbers(a, b) {
-    return b.likes - a.likes;
+    return b.likes - a.likes
   }
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const App = () => {
       .getAll()
       .then(initialBlogs => {
         initialBlogs.map(blog => {
-        users.concat(blog.user)
-      })})
-    }, [])
-  
+          setUsers(users.concat(blog.user))
+        })})
+  }, [])
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
@@ -45,7 +45,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-  
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -102,7 +101,7 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
-    </div>    
+    </div>
   )
 
   const addBlog = (blogObject) => {
@@ -111,6 +110,12 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setInfoMessage(
+          `a new blog ${blogObject.title} added`
+        )
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
       })
   }
 
@@ -119,7 +124,7 @@ const App = () => {
       blogService
         .remove(id)
         .then(() => {
-          setBlogs(blogs.filter((b) => b.id !== id));
+          setBlogs(blogs.filter((b) => b.id !== id))
           setInfoMessage(
             `${title} has been successfully removed`
           )
@@ -127,15 +132,15 @@ const App = () => {
             setInfoMessage(null)
           }, 5000)
         })
-        .catch((err) => {
-          setBlogs(blogs.filter((b) => b.id !== id));
+        .catch(() => {
+          setBlogs(blogs.filter((b) => b.id !== id))
           setDangerMessage(
             `Information of ${title} has already been removed from server`
           )
           setTimeout(() => {
             setDangerMessage(null)
           }, 5000)
-        });
+        })
     }
   }
 
@@ -178,7 +183,7 @@ const App = () => {
             {logOut()}
           </p>
           {blogForm()}
-          {blogs.map((blog, i) => 
+          {blogs.map((blog, i) =>
             <Blog
               sessionUser={user.name}
               key={i}
@@ -196,4 +201,4 @@ const App = () => {
   )
 }
 
-export default App 
+export default App
