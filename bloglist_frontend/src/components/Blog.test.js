@@ -60,4 +60,11 @@ describe('<Togglable />', () => {
     const div = component.container.querySelector('.togglableElement')
     expect(div).toHaveStyle('display: none')
   })
+
+  test('After "show" button click url and likes are visible', () => {
+    const div = component.container.querySelector('.togglableElement')
+    const button = component.getByText('view')
+    fireEvent.click(button)
+    expect(div).toHaveStyle('display: block')
+  })
 })
