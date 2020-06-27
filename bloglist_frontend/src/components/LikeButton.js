@@ -17,7 +17,7 @@ const LikeButton = ({
   }
 
   return (
-    <button onClick={addLike}>{buttonLabel}</button>
+    <button className='likeButton' onClick={addLike}>{buttonLabel}</button>
   )
 }
 

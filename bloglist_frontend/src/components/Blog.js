@@ -15,7 +15,7 @@ const Blog = ({ sessionUser, blog, user, updateBlog, eraseBlog, blogObject }) =>
   //console.log(`blog.id: ${blog.id} and typeof: ${typeof blog.id}`);
   return (
     <div style={BlogStyle1}>
-      {blog.title} {blog.author}
+      <div className='blogTaser'>{blog.title} {blog.author}</div>
       <Togglable buttonLabel='view' buttonLabel2='hide' ref={blogFormRef}>
         <div>
           {blog.url}
