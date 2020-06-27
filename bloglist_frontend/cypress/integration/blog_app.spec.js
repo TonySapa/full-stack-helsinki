@@ -48,7 +48,7 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
     })
 
-    it('a new blog can be added', function() {
+    it('A blog can be created', function() {
       cy.contains('new blog').click()
       cy.get('#titleInput').type('a blog created by cypress')
       cy.get('#authorInput').type('Sr. Cypress Sánchez')
