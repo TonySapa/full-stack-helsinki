@@ -20,7 +20,7 @@ const Blog = ({ sessionUser, blog, user, updateBlog, eraseBlog, blogObject }) =>
         <div>
           {blog.url}
         </div>
-        <div>
+        <div id='likes' >
           Likes: {blog.likes}
           <LikeButton
             buttonLabel='like' blog={blog} updateBlog={updateBlog}

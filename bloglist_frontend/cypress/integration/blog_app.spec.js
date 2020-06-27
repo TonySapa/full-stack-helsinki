@@ -37,7 +37,6 @@ describe('Blog app', function() {
         cy.contains('wrong username or password')
       })
     })
-
   })
 
   describe('when logged in', function() {
@@ -46,6 +45,12 @@ describe('Blog app', function() {
       cy.get('#username').type('username1')
       cy.get('#password').type('password1')
       cy.get('#login-button').click()
+
+      cy.contains('new blog').click()
+      cy.get('#titleInput').type('template blog 1')
+      cy.get('#authorInput').type('Sr. Cypress Sánchez')
+      cy.get('#urlInput').type('cypress.com')
+      cy.contains('save').click()
     })
 
     it('A blog can be created', function() {
@@ -53,10 +58,18 @@ describe('Blog app', function() {
       cy.get('#titleInput').type('a blog created by cypress')
       cy.get('#authorInput').type('Sr. Cypress Sánchez')
       cy.get('#urlInput').type('cypress.com')
-
       cy.contains('save').click()
-      cy.contains('a blog created by cypress')
-    })
-  })
 
+      cy.contains('a blog created by cypress')
+      cy.get('.info').should('have.css', 'color', 'rgb(0, 128, 0)')
+    })
+
+    it('A blog can be liked', function() {
+      cy.contains('view').click()
+      cy.get('#likes').contains('Likes: 0')
+      cy.contains('like').click()
+      cy.get('#likes').contains('Likes: 1')
+    })
+
+  })
 })
