@@ -27,7 +27,7 @@ const App = () => {
       type: 'ZERO'
     })
   }
-
+  
   return (
     <div>
       <button onClick={good}>good</button> 
@@ -37,6 +37,11 @@ const App = () => {
       <div>good {store.getState().good}</div>
       <div>neutral {store.getState().ok}</div>
       <div>bad {store.getState().bad}</div>
+      <div>Reviews: {(
+        store.getState().good) * 5 +
+        store.getState().ok * 4 +
+        store.getState().bad * 2
+      }</div>
     </div>
   )
 }
