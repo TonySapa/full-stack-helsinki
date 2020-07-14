@@ -6,7 +6,7 @@ const AnecdoteList = () => {
     return b.votes - a.votes
   }
 
-  const anecdotes = useSelector(state => state).sort(byVotes)
+  const anecdotes = useSelector(state => state.anecdotes).sort(byVotes)
   const dispatch = useDispatch()
 
   const vote = (id) => {
