@@ -1,17 +1,21 @@
 import React from 'react'
-import Notification from './components/Notification'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
+import Notification from './components/Notification'
+import Filter from './components/Filter'
 
 const App = () => {
+
   return (
-    <>
+    <div>
+      <Notification/>
+      <Filter/>
       <h2>Anecdotes</h2>
-      <Notification />
-      <AnecdoteList />
-      <AnecdoteForm />
-    </>
+      <AnecdoteList/>
+      <h2>create new</h2>
+      <AnecdoteForm/>
+    </div>
   )
 }
 
-export default App 
+export default App

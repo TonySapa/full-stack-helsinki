@@ -1,46 +1,26 @@
-const defaultNotification = {
-  message: 'default text (just to test)'
+
+export const setNotification = (notification) => {
+  return {
+    type: 'SET_NOTIFICATION',
+    data: { notification }
+  }
 }
 
-const notificationReducer = (state=defaultNotification, action) => {
-  switch(action.type) {
-    case 'NEW':
-      return {...state, message: action.data}
-    case 'VOTE':
-      return {...state, message: action.data}
+export const clearNotification = (notification) => {
+  return {
+    type: 'CLEAR_NOTIFICATION'
+  }
+}
+
+const notificationReducer = (state = 'default text (just to test)', action) => {
+  switch (action.type) {
+    case 'SET_NOTIFICATION':
+      return action.data.notification
+    case 'CLEAR_NOTIFICATION':
+      return ''
     default:
-      return state;
+      return state
   }
 }
 
-export const newNotification = (anecdote, time) => {
-  return async dispatch => {
-    dispatch({
-      type: 'NEW',
-      data: `You created: "${anecdote}"`
-    });
-    setTimeout(() => 
-      dispatch({
-        type: 'REMOVE',
-        data: ''
-      }),
-    time)
-  }
-}
-
-export const voteNotification = (anecdote, time) => {
-  return async dispatch => {
-    dispatch({
-      type: 'VOTE',
-      data: `You voted for: "${anecdote}"`
-    })
-    setTimeout(() => 
-      dispatch({
-        type: 'REMOVE',
-        data: ''
-      }),
-    time)
-  }
-}
-
-export default notificationReducer;
+export default notificationReducer
