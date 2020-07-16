@@ -25,8 +25,6 @@ export const voteAnecdote = (id, content, votes) => {
   }
 }
 
-
-
 /*export const createAnecdote = content => {
   return {
     type: 'ADD',

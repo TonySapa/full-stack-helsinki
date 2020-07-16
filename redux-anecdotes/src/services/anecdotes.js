@@ -14,11 +14,6 @@ const createNew = async (content) => {
   return res.data
 }
 
-const getById = async (id) => {
-  const res = await axios.get(`${baseUrl}/${id}`)
-  return res.data
-}
-
 const voteAnecdote = async (id, content, votes) => {
   const object = {
     content: content,
@@ -27,13 +22,5 @@ const voteAnecdote = async (id, content, votes) => {
   const res = await axios.put(`${baseUrl}/${id}`, object)
   return res.data
 }
-
-/*router.put('/:id', async (request, response) => {
-  const blog = request.body
-
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-  response.json(updatedBlog.toJSON())
-})*/
-
 
 export default { getAll, createNew, getById, voteAnecdote }
