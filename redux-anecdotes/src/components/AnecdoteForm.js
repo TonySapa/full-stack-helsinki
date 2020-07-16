@@ -8,7 +8,7 @@ import { setNotification, clearNotification } from '../reducers/notificationRedu
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
-  const handlecreateAnecdote = async (event) => {
+  const handlecreateAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
@@ -18,7 +18,6 @@ const AnecdoteForm = () => {
       //.then(dispatch(createAnecdote(content)))*/
     
     dispatch(createAnecdote(content))
-    await dispatch(initializeAnecdotes())
     
     dispatch(setNotification(`you added "${content}"`))
     setTimeout(() => dispatch(clearNotification()), 5000)

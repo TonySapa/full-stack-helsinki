@@ -8,12 +8,24 @@ import anecdoteService from '../services/anecdotes'
   }
 }*/
 
-export const voteAnecdote = id => {
+/*export const voteAnecdote = id => {
   return {
     type: 'VOTE',
     data: { id }
   }
+}*/
+
+export const voteAnecdote = (id, content, votes) => {
+  return async dispatch => {
+    await anecdoteService.voteAnecdote(id, content, votes + 1)
+    dispatch({
+      type: 'VOTE',
+      data: { id }
+    })
+  }
 }
+
+
 
 /*export const createAnecdote = content => {
   return {
@@ -24,11 +36,11 @@ export const voteAnecdote = id => {
 
 export const createAnecdote = content => {
   return async dispatch => {
-    const newNote = await anecdoteService.createNew(content)
+    const newAnecdote = await anecdoteService.createNew(content)
     dispatch({
-      type: 'NEW_NOTE',
+      type: 'ADD',
       //data: asObject(content)
-      data: newNote,
+      data: newAnecdote,
     })
   }
 }
