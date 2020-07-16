@@ -1,8 +1,11 @@
 
-export const setNotification = (notification) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    data: { notification }
+export const setNotification = (notification, seconds) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: { notification }  
+    })
+    setTimeout(() => dispatch(clearNotification()), seconds*1000)
   }
 }
 

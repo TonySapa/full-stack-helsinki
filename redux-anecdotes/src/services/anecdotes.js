@@ -23,4 +23,4 @@ const voteAnecdote = async (id, content, votes) => {
   return res.data
 }
 
-export default { getAll, createNew, getById, voteAnecdote }
+export default { getAll, createNew, voteAnecdote }
