@@ -1,12 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { setFilter } from "../reducers/filterReducer";
+import React from 'react'
+import { connect } from 'react-redux'
+import { setFilter } from '../reducers/filterReducer'
 
-const Filter = ({ setFilter }) => {
+const Filter = (props) => {
+
   const handleChange = (event) => {
-    setFilter(event.target.value);
-  };
+    const filter = event.target.value
+    props.setFilter(filter)
+  }
 
   const style = {
     marginTop: 10,
@@ -18,10 +19,9 @@ const Filter = ({ setFilter }) => {
       filter <input name='filter' onChange={handleChange} />
     </div>
   )
-};
+}
 
-Filter.propTypes = {
-  setFilter: PropTypes.func.isRequired,
-};
-
-export default connect(null, { setFilter })(Filter);
+export default connect(
+  null, 
+  { setFilter }
+)(Filter)

@@ -15,8 +15,8 @@ const AnecdoteList = (props) => {
   }
   
   const handleVote = (anecdote) => {
-    voteAnecdote(anecdote.id, anecdote.content, anecdote.votes)
-    setNotification(`you voted "${anecdote.content}"`, 10)
+    props.voteAnecdote(anecdote.id, anecdote.content, anecdote.votes)
+    props.setNotification(`you voted "${anecdote.content}"`, 10)
   }
 
 
@@ -45,5 +45,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedAnecdotes = connect(mapStateToProps)(AnecdoteList)
+const ConnectedAnecdotes = connect(
+  mapStateToProps,
+  { voteAnecdote, setNotification}
+)(AnecdoteList)
+
 export default ConnectedAnecdotes
