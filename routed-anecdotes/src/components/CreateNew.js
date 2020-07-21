@@ -26,30 +26,30 @@ const CreateNew = ({ addNew, addNotification }) => {
     history.push('/')
   }
 
+  const resetForm = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form id='createNew' onSubmit={handleSubmit}>
         <div>
           content
           <input {...content} />
         </div>
         <div>
           author
-          <input
-            type={author.type}
-            value={author.value}
-            onChange={author.onChange}           
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            type={info.type}
-            value={info.value}
-            onChange={info.onChange}           
-          />
+          <input {...info} />
         </div>
+        <button onClick={resetForm}>reset</button>
         <button type='submit'>create</button>
       </form>
     </div>
