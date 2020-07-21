@@ -39,15 +39,15 @@ const CreateNew = ({ addNew, addNotification }) => {
       <form id='createNew' onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content} reset={null} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author} reset={null} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info} reset={null} />
         </div>
         <button onClick={resetForm}>reset</button>
         <button type='submit'>create</button>
