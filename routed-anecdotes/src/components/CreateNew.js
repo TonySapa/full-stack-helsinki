@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React from 'react'
+import  { useField } from '../hooks/index'
 
 import {
   useHistory
@@ -6,16 +7,16 @@ import {
 
 const CreateNew = ({ addNew, addNotification }) => {
   const history = useHistory()
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const newObject = {
-      content: content,
-      author: author,
-      info: info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0      
     }
     addNew(newObject)
@@ -31,15 +32,23 @@ const CreateNew = ({ addNew, addNotification }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input
+            type={author.type}
+            value={author.value}
+            onChange={author.onChange}           
+          />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input
+            type={info.type}
+            value={info.value}
+            onChange={info.onChange}           
+          />
         </div>
         <button type='submit'>create</button>
       </form>

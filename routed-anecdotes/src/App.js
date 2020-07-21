@@ -38,7 +38,7 @@ const App = () => {
   }
 
   const addNotification = async (anecdote) => {
-    setNotification(anecdote)
+    setNotification(`a new anecdote "${anecdote}" has been created!`)
     setTimeout(() => {
       setNotification('')
     }, 5000)   
