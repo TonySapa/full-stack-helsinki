@@ -1,0 +1,18 @@
+{
+  "blogs": [
+    {
+      "title": "Overreact",
+      "author": "Dan Abramov",
+      "url": "randomblog.org",
+      "likes": 47,
+      "id": 1
+    },
+    {
+      "title": "Invented Blog",
+      "author": "Dr Invented",
+      "url": "invented.com",
+      "likes": 20,
+      "id": 2
+    }
+  ]
+}

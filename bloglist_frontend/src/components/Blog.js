@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Togglable from './Togglable'
 import LikeButton from './LikeButton'
 

@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import { connect } from 'react-redux' 
+import { createBlog } from '../reducers/blogReducer'
 
 const BlogForm = ({ createBlog }) => {
   const [newTitle, setnewTitle] = useState('')
@@ -66,4 +68,7 @@ const BlogForm = ({ createBlog }) => {
   )
 }
 
-export default BlogForm
+export default connect(
+  null, 
+  { createBlog }
+)(BlogForm)

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -7,7 +8,15 @@ import DangerAlert from './components/DangerAlert'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { initializeBlogs } from './reducers/blogReducer'
+import { useDispatch } from 'react-redux'
+
 const App = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
+
   const [blogs, setBlogs] = useState([])
   const [users, setUsers] = useState([])
   const [username, setUsername] = useState('')
@@ -26,7 +35,7 @@ const App = () => {
       .then(initialBlogs => {
         setBlogs(initialBlogs.sort(compareNumbers))
       })
-  }, [])
+  }, [blogs])
 
   useEffect(() => {
     blogService
@@ -203,4 +212,4 @@ const App = () => {
   )
 }
 
-export default App
+export default connect()(App)
