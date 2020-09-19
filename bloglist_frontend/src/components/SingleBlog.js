@@ -23,6 +23,13 @@ const SingleBlog = (props) => {
         {blog.likes} likes <button id="voteButton" type="button" onClick={() => dispatch(blogsVoteAction(blog.id))}>like</button>
       </p>
       added by {blog.author}
+      <br/>
+      <h2>comments</h2>
+      {
+        blog.comments
+        ? <ul>{blog.comments.map(c => <li>{c}</li>)}</ul>
+        : null
+      }
     </>
   )
 }

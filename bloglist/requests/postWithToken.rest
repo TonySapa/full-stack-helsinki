@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImlkIjoiNWVlYzhiZWEzYmYxN2EyOTI4NDc3NGMxIiwiaWF0IjoxNTkyNTc1ODI0fQ.-QRtiyqyS6ral5zGt72JHGMNcfIQBCBvUC9-JykIP2k
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImlkIjoiNWVmNzU5OWI1OWQ0M2IyNGY0OTRiNWU4IiwiaWF0IjoxNjAwNTIwNjI0fQ.RcIpq6T9bFU2nXar7HMtsAidDMEAUOTrAsY3zc2D7a0
 
 {
   "title": "blog of username1 john lennon3",
   "author": "Toni Flaco",
-  "url": "http://www.webinventada.com"
+  "url": "http://www.webinventada.com",
+  "comments": ["test comment 1", "test comment 2"]
 }

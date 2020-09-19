@@ -1,10 +1,6 @@
-PUT http://localhost:3003/api/blogs/5ee4ca3ca8665a64cbeb612a
+PUT http://localhost:3001/api/blogs/5ef7599f59d43b24f494b5ea
 Content-Type: application/json
 
 {
-  "title": "Overreacted been modified",
-  "author": "Dan Abramov",
-  "url": "https://overreacted.io/",
-  "likes": 33,
-  "id": "5ee4ca3ca8665a64cbeb612a"
+  "comments": ["test comment 1", "other test comment"]
 }
