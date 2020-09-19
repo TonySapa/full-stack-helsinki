@@ -1,10 +1,16 @@
-import React from "react"
+import React, {useState, useEffect} from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { notificAction } from "../reducers/notificationReducer"
 import { logoutAction } from "../reducers/userReducer"
 import { NavLink } from 'react-router-dom'
+// Antd design styles
+import { Menu } from 'antd';
+import { BookOutlined, UserOutlined } from '@ant-design/icons';
 
+const { SubMenu } = Menu;
 const LoggedInHeader = () => {
+  const [current, setCurrent] = useState(window.location.pathname.slice(1))
+
   const dispatch = useDispatch();
   const loggedInName = useSelector((state) => state.user).name;
 
@@ -15,15 +21,21 @@ const LoggedInHeader = () => {
   };
 
   return (
-    <nav style={{backgroundColor: 'silver'}}>
-      <NavLink style={{margin: '10px'}} to='/blogs/'>blogs</NavLink>
-      <NavLink style={{margin: '10px'}} to='/users/'>users</NavLink>
-      {`${loggedInName} logged in.`}
+    <>
+      <Menu selectedKeys={current} mode="horizontal">
+        <Menu.Item onClick={() => setCurrent('blog')} key="blog" icon={<BookOutlined />}>
+          <NavLink to='/blogs'>Blogs</NavLink>
+        </Menu.Item>
+        <Menu.Item onClick={() => setCurrent('user')} key="user" icon={<UserOutlined />}>
+          <NavLink to='/users'>Users</NavLink>
+        </Menu.Item>
+      </Menu>
+        {`${loggedInName} logged in.`}
 
-      <button id="logoutButton" type="button" onClick={handleLogout} >
-        Log out
-      </button>
-    </nav>
+        <button id="logoutButton" type="button" onClick={handleLogout} >
+          Log out
+        </button>
+    </>
   );
 }
 
