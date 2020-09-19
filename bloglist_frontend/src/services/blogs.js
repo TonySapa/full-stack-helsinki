@@ -43,6 +43,12 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
+const getById = (id) => {
+  const request = axios.get(`${baseUrl}/${id}`);
+  return request.then((response) => response.data);
+};
+
+
 export default {
-  getAll, setToken, postBlog, updateBlog, removeBlog
+  getAll, getById, setToken, postBlog, updateBlog, removeBlog
 };

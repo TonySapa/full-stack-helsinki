@@ -44,7 +44,7 @@ const Users = (props) => {
 
       <h3>Users</h3>
       <table style={{ textAlign: "left" }}>
-        <thead><tr><th>user</th><th>blogs submitted</th></tr></thead>
+        <thead><tr><th>user</th><th>blogs created</th></tr></thead>
         <tbody>
           {userStats
             ? constructTableData(userStats)

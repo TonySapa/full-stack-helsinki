@@ -10,6 +10,11 @@ router.get('/', async (request, response) => {
   response.json(blogs)
 })
 
+router.get('/:id', async (req, res) => {
+  const blog = await Blog.findById(req.params.id)
+  blog ? res.status(200).json(blog) : res.status(404).json({ error: 'No blog found with that id' })
+})
+
 router.delete('/:id', async (request, response) => {
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 

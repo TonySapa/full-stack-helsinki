@@ -7,6 +7,7 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Users from "./components/Users";
 import SingleUser from "./components/SingleUser";
+import SingleBlog from "./components/SingleBlog";
 
 import blogService from "./services/blogs";
 import Togglable from "./components/Togglable";
@@ -46,6 +47,7 @@ const App = () => {
             ? <Users user={user} blogs={blogs} />
             : <Redirect to="/" /> }
         </Route>
+        <Route path="/blogs/:id" component={SingleBlog} />
         <Route path="/">
           {user === null
             ? (
