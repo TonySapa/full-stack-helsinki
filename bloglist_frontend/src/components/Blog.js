@@ -1,43 +1,59 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import Togglable from './Togglable'
-import LikeButton from './LikeButton'
+/* eslint-disable no-alert */
+import React from "react";
+import { useDispatch } from "react-redux";
+import Togglable from "./Togglable";
+import { notificAction } from "../reducers/notificationReducer";
+import { blogsRemoveAction, blogsVoteAction } from "../reducers/blogsReducer";
 
-const blogFormRef = React.createRef()
+/**
+ * Blog component consists of its title and a Togglable component
+ * which in turn contains the blog details.
+ */
+const Blog = ({
+  blog, loggedInUser
+}) => {
+  const dispatch = useDispatch();
+  const removeClickHandler = async () => {
+    if (!window.confirm(`Are you sure you want to remove blog "${blog.title}" by ${blog.author}?`)) return;
+    try {
+      dispatch(blogsRemoveAction(blog.id));
+      dispatch(notificAction({ type: "success", message: `Blog "${blog.title}" removed.` }, 3));
+    } catch (error) {
+      dispatch(notificAction({ type: "failure", message: `Only allowed for submitter. (${error.response.status} ${error.response.statusText})` }, 3));
+    }
+  };
 
-const Blog = ({ sessionUser, blog, user, updateBlog, eraseBlog, blogObject }) => {
-  const BlogStyle1 = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-  //console.log(`blog.id: ${blog.id} and typeof: ${typeof blog.id}`);
   return (
-    <div style={BlogStyle1}>
-      <div className='blogTaser'>{blog.title} {blog.author}</div>
-      <Togglable buttonLabel='view' buttonLabel2='hide' ref={blogFormRef}>
-        <div>
-          {blog.url}
-        </div>
-        <div id='likes' >
-          Likes: {blog.likes}
-          <LikeButton
-            buttonLabel='like' blog={blog} updateBlog={updateBlog}
-            id={blog.id} blogObject={blogObject}
-          />
-        </div>
-        <div>
-          {user}
-        </div>
-        {user === sessionUser
-          ? <button onClick={() => eraseBlog(blog.title, blog.id)}>remove</button>
-          : null
-        }
-      </Togglable>
-    </div>
-  )
-}
 
-export default Blog
+    <div className="blog">
+
+      <b style={{ display: "block" }}>{blog.title}</b>
+      <i style={{ display: "block" }}>{`by ${blog.author}`}</i>
+
+      <Togglable toggleLabels={{ labelShow: "Show details", labelHide: "Hide details" }}>
+
+        <ul>
+          <li>
+            {`votes: ${blog.likes}`}
+            <button id="voteButton" type="button" onClick={() => dispatch(blogsVoteAction(blog.id))}>vote</button>
+          </li>
+          {blog.user !== null ? <li>{`submitted by ${blog.user.name}`}</li> : ""}
+          <li><a href={blog.url}>link</a></li>
+        </ul>
+
+        {// render "remove" button only if submitter is logged in
+        (blog.user !== null && loggedInUser.username === blog.user.username)
+        && (
+        <button className="removeButton" type="button" onClick={removeClickHandler}>
+          Remove blog
+        </button>
+        )
+        }
+
+      </Togglable>
+
+    </div>
+  );
+};
+
+export default Blog;

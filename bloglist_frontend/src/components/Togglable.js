@@ -1,31 +1,36 @@
-import React, { useState, useImperativeHandle } from 'react'
+import React, { useState, useImperativeHandle } from "react";
+import PropTypes from "prop-types";
 
-const Togglable = React.forwardRef((props, ref) => {
-  const [visible, setVisible] = useState(false)
+const Togglable = React.forwardRef(({ children, toggleLabels }, ref) => {
+  const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  const { labelShow, labelHide } = toggleLabels;
 
   const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+    setVisible(!visible);
+  };
 
-  useImperativeHandle(ref, () => {
-    return {
-      toggleVisibility
-    }
-  })
+  // expose "toggleVisibility" to parent components
+  useImperativeHandle(ref, () => toggleVisibility);
+
   return (
     <div>
-      <div style={hideWhenVisible}>
-        <button className='showHide' onClick={toggleVisibility}>{props.buttonLabel}</button>
+      <div style={{ display: visible ? "none" : "" }}>
+        <button id="toggleButton" type="button" onClick={toggleVisibility}>{labelShow}</button>
       </div>
-      <div style={showWhenVisible} className="togglableElement">
-        <button onClick={toggleVisibility}>{props.buttonLabel2}</button>
-        {props.children}
+      <div style={{ display: visible ? "" : "none" }} className="togglableContent">
+        <button id="toggleButton" type="button" onClick={toggleVisibility}>{labelHide}</button>
+        {children}
       </div>
     </div>
-  )
-})
+  );
+});
 
-export default Togglable
+Togglable.propTypes = {
+  toggleLabels: PropTypes.shape({
+    labelShow: PropTypes.string.isRequired,
+    labelHide: PropTypes.string.isRequired
+  }).isRequired
+};
+
+export default Togglable;

@@ -1,70 +1,55 @@
-import React, {useState} from 'react'
-import '@testing-library/jest-dom/extend-expect'
-import { render, fireEvent } from '@testing-library/react'
-//import { prettyDOM } from '@testing-library/dom'
-import Togglable from './Togglable'
-import LikeButton from './LikeButton'
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
+import { render, fireEvent } from "@testing-library/react";
+import Blog from "./Blog";
 
-const blogFormRef = React.createRef()
-
-describe('<Togglable />', () => {
-  let component
+describe("<Blog />", () => {
+  let component;
+  const mockVoteClickHandler = jest.fn(); // mock handler
 
   beforeEach(() => {
-    const BlogStyle1 = {
-      paddingTop: 10,
-      paddingLeft: 2,
-      border: 'solid',
-      borderWidth: 1,
-      marginBottom: 5
-    }
-
-    const blog = {
-      title: "myTitle",
-      author: "myAuthor",
-      url: "myUrl",
-      likes: 47,
-      user: {
-        user: "myUser",
-        username: "myusername"
-      },
-      id: 'myId'
-    }
-
-    const user = 'thisUser'
-
+    const loggedInUser = { name: "Leevi Lähettäjä", username: "leevil" };
     component = render(
-      <div>
-        {blog.title} {blog.author}
-        <Togglable buttonLabel='view' buttonLabel2='hide' ref={blogFormRef}>
-          <div>
-            {blog.url}
-          </div>
-          <div>
-            Likes: {blog.likes}
-            <LikeButton
-              buttonLabel='like' blog={blog}
-              id={blog.id}
-            />
-          </div>
-          <div>
-            {user}
-          </div>
-          <button onClick={() => eraseBlog(blog.title, blog.id)}>remove</button>
-        </Togglable>
-      </div>
-      )
-    })
+      <Blog
+        blog={{
+          title: "Testiblogi",
+          author: "Teemu Testaaja",
+          url: "http://www.google.com",
+          user: { name: "Leevi Lähettäjä", username: "leevil" }
+        }}
+        loggedInUser={loggedInUser}
+        voteClickHandler={mockVoteClickHandler}
+      />
+    );
+  });
 
-  test('By default it renders title and author but not url neither likes', () => {
-    const div = component.container.querySelector('.togglableElement')
-    expect(div).toHaveStyle('display: none')
-  })
+  test("renders blog's title and author", () => {
+    expect(component.container).toHaveTextContent("Testiblogi");
+    expect(component.container).toHaveTextContent("Teemu Testaaja");
+  });
+  test("does not initially render URL or likes", () => {
+    const listItemNodes = component.container.querySelectorAll("li");
+    listItemNodes.forEach((element) => {
+      if (element.textContent.includes("votes") || element.textContent.includes("link")) {
+        expect(element).not.toBeVisible();
+      }
+    });
+  });
+  test("renders URL and likes once toggle is clicked", () => {
+    const toggleButton = component.getByText("Show details");
+    fireEvent.click(toggleButton);
 
-  test('After "show" button click url and likes are visible', () => {
-    const div = component.container.querySelector('.togglableElement')
-    const button = component.getByText('view')
-    fireEvent.click(button)
-    expect(div).toHaveStyle('display: block')
-  })
-})
+    const listItemNodes = component.container.querySelectorAll("li");
+    listItemNodes.forEach((element) => {
+      if (element.textContent.includes("votes") || element.textContent.includes("link")) {
+        expect(element).toBeVisible();
+      }
+    });
+  });
+  test("vote handler is called twice if vote button is clicked twice", () => {
+    const voteButton = component.getByText("vote");
+    fireEvent.click(voteButton);
+    fireEvent.click(voteButton);
+    expect(mockVoteClickHandler.mock.calls).toHaveLength(2);
+  });
+});

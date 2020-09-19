@@ -1,50 +1,18 @@
 module.exports = {
+  "extends": "eslint-config-airbnb",
   "env": {
-      "browser": true,
-      "es6": true,
-      "jest/globals": true,
-      "cypress/globals": true
+    "browser": true,
+    "jest": true,
+    "cypress/globals": true
   },
-  "extends": [ 
-      "eslint:recommended",
-      "plugin:react/recommended"
-  ],
-  "parserOptions": {
-      "ecmaFeatures": {
-          "jsx": true
-      },
-      "ecmaVersion": 2018,
-      "sourceType": "module"
+  "rules": {
+    "linebreak-style": [1, "windows"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "quotes": ["error", "double"],
+    "react/prop-types": 0,
+    "comma-dangle": ["error", "never"]
   },
   "plugins": [
-      "react", "jest", "cypress"
+    "react", "cypress"
   ],
-  "rules": {
-      "indent": [
-          "error",
-          2  
-      ],
-      "linebreak-style": [
-          "error",
-          "windows"
-      ],
-      "quotes": [
-          "error",
-          "single"
-      ],
-      "semi": [
-          "error",
-          "never"
-      ],
-      "eqeqeq": "error",
-      "no-trailing-spaces": "error",
-      "object-curly-spacing": [
-          "error", "always"
-      ],
-      "arrow-spacing": [
-          "error", { "before": true, "after": true }
-      ],
-      "no-console": 0,
-      "react/prop-types": 0
-  }
-}
+};

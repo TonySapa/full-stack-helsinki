@@ -1,20 +1,25 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
-
-import blogReducer from './reducers/blogReducer'
-//import filterReducer from './reducers/filterReducer'
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import notificationReducer from "./reducers/notificationReducer";
+import timeoutReducer from "./reducers/timeoutReducer";
+import blogsReducer from "./reducers/blogsReducer";
+import userReducer from "./reducers/userReducer";
+import thunk from "redux-thunk";
 
 const reducer = combineReducers({
-  blogs: blogReducer,
-  //filter: filterReducer,
-})
+  notification: notificationReducer,
+  timeout: timeoutReducer,
+  blogs: blogsReducer,
+  user: userReducer
+});
 
 const store = createStore(
   reducer,
-  composeWithDevTools(
-    applyMiddleware(thunk)
-  )
-)
+  composeWithDevTools === undefined
+    ? applyMiddleware(thunk)
+    : composeWithDevTools(
+      applyMiddleware(thunk)
+    )
+);
 
-export default store
+export default store;

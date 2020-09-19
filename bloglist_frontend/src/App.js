@@ -1,215 +1,86 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import Blog from './components/Blog'
-import BlogForm from './components/BlogForm'
-import Togglable from './components/Togglable'
-import InfoAlert from './components/InfoAlert'
-import DangerAlert from './components/DangerAlert'
-import blogService from './services/blogs'
-import loginService from './services/login'
+// Low-priority-TODO: Organize imports.
+import React, { useState, useEffect } from "react";
+import "./App.css"; // notifications' styles
+import CreateBlog from "./components/CreateBlog";
+import LoggedInView from "./components/LoggedInView";
+import LoginForm from "./components/LoginForm";
+import Notification from "./components/Notification";
+import Users from "./components/Users";
+import SingleUser from "./components/SingleUser";
 
-import { initializeBlogs } from './reducers/blogReducer'
-import { useDispatch } from 'react-redux'
+import blogService from "./services/blogs";
+import Togglable from "./components/Togglable";
+import { useSelector, useDispatch } from "react-redux";
+import { blogsInitAction } from "./reducers/blogsReducer";
+import { checkExistingLogin } from "./reducers/userReducer";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 const App = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [dispatch])
+  // old state hooks to be replaced with Redux
+  const [loginInputs, setLoginInputs] = useState({ username: "", password: "" });
 
-  const [blogs, setBlogs] = useState([])
-  const [users, setUsers] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [infoMessage, setInfoMessage] = useState(null)
-  const [dangerMessage, setDangerMessage] = useState(null)
-
-  function compareNumbers(a, b) {
-    return b.likes - a.likes
-  }
+  // new Redux states
+  const dispatch = useDispatch(); // state updating tool
+  const notification = useSelector((state) => state.notification);
+  const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(initialBlogs => {
-        setBlogs(initialBlogs.sort(compareNumbers))
-      })
-  }, [blogs])
+    dispatch(blogsInitAction());
+  }, [dispatch]);
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(initialBlogs => {
-        initialBlogs.map(blog => {
-          setUsers(users.concat(blog.user))
-        })})
-  }, [])
+    // check for existing login
+    dispatch(checkExistingLogin());
+  }, [dispatch]);
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-      window.localStorage.setItem(
-        'loggedBloglistUser', JSON.stringify(user)
-      )
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      setDangerMessage('wrong username or password')
-      setTimeout(() => {
-        setDangerMessage(null)
-      }, 5000)
-    }
-  }
-
-  const handleLogout = (event) => {
-    event.preventDefault()
-    window.localStorage.removeItem('loggedBloglistUser')
-    blogService.setToken('')
-    setUser(null)
-    setUsername('')
-    setPassword('')
-  }
-
-  const loginForm = () => (
-    <div>
-      <h1>log in to application</h1>
-      <DangerAlert message={dangerMessage} />
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            id='username'
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            id='password'
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button id='login-button' type="submit">login</button>
-      </form>
-    </div>
-  )
-
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setInfoMessage(
-          `a new blog ${blogObject.title} added`
-        )
-        setTimeout(() => {
-          setInfoMessage(null)
-        }, 5000)
-      })
-  }
-
-  const eraseBlog = (title, id) => {
-    if (window.confirm(`Delete ${title}?`)) {
-      blogService
-        .remove(id)
-        .then(() => {
-          setBlogs(blogs.filter((b) => b.id !== id))
-          setInfoMessage(
-            `${title} has been successfully removed`
-          )
-          setTimeout(() => {
-            setInfoMessage(null)
-          }, 5000)
-        })
-        .catch(() => {
-          setBlogs(blogs.filter((b) => b.id !== id))
-          setDangerMessage(
-            `Information of ${title} has already been removed from server`
-          )
-          setTimeout(() => {
-            setDangerMessage(null)
-          }, 5000)
-        })
-    }
-  }
-
-  const addLike = async (id, blogObject) => {
-    blogService
-      .update(id, blogObject)
-    blogService
-      .getAll()
-      .then(returnedBlogs => {
-        setBlogs(returnedBlogs.sort(compareNumbers))
-      })
-
-  }
-
-  const logOut = () => (
-    <button onClick={handleLogout}>logout</button>
-  )
-
-  const blogFormRef = React.createRef()
-
-  const blogForm = () => (
-    <Togglable buttonLabel='new blog' buttonLabel2='cancel' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
-    </Togglable>
-  )
-
-  const getBlogUser = (blog) => {
-    return (blog.user) ? blog.user.name : ' '
-  }
-
+  const toggleRef = React.createRef(); // ref for the Togglable of CreateBlog
   return (
     <div>
-      {user === null ?
-        loginForm() :
-        <div>
-          <InfoAlert message={infoMessage} />
-          <h1>blogs</h1>
-          <p>
-            {user.name} logged in
-            {logOut()}
-          </p>
-          {blogForm()}
-          {blogs.map((blog, i) =>
-            <Blog
-              sessionUser={user.name}
-              key={i}
-              blog={blog}
-              id={blog.id}
-              user={getBlogUser(blog)}
-              updateBlog={addLike}
-              eraseBlog={eraseBlog}
-              title={blog.title}
-            />
-          )}
-        </div>
-      }
-    </div>
-  )
-}
+      { notification !== null && <Notification notification={notification} /> }
 
-export default connect()(App)
+      <Switch>
+        <Route path="/users/:id" component={SingleUser} />
+        <Route path="/users">
+          { window.localStorage.getItem("loggedInUser")
+            ? <Users user={user} blogs={blogs} />
+            : <Redirect to="/" /> }
+        </Route>
+        <Route path="/">
+          {user === null
+            ? (
+              <LoginForm
+                loginInputs={loginInputs}
+                setLoginInputs={setLoginInputs}
+                user={user}
+              />
+            )
+            : (
+              <>
+                <LoggedInView
+                  blogs={blogs}
+                  user={user}
+                />
+                <Togglable
+                  toggleLabels={{
+                    labelShow: "Submit a new blog",
+                    labelHide: "Cancel submission"
+                  }}
+                  ref={toggleRef}
+                >
+                  <CreateBlog
+                    blogs={blogs}
+                    toggleRef={toggleRef}
+                    handleNewBlogSubmit={blogService.handleNewBlogSubmit}
+                  />
+                </Togglable>
+              </>
+          )}
+        </Route>
+      </Switch>
+    </div>
+
+  );
+};
+
+export default App;
