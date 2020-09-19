@@ -1,9 +1,10 @@
 /* eslint-disable no-alert */
-import React from "react";
-import { useDispatch } from "react-redux";
-import Togglable from "./Togglable";
-import { notificAction } from "../reducers/notificationReducer";
-import { blogsRemoveAction, blogsVoteAction } from "../reducers/blogsReducer";
+import React from "react"
+import { useDispatch } from "react-redux"
+import Togglable from "./Togglable"
+import { notificAction } from "../reducers/notificationReducer"
+import { blogsRemoveAction, blogsVoteAction } from "../reducers/blogsReducer"
+import { NavLink } from 'react-router-dom'
 
 /**
  * Blog component consists of its title and a Togglable component
@@ -25,33 +26,33 @@ const Blog = ({
 
   return (
 
-    <div className="blog">
+    <div className='blog'>
+      <NavLink to={`/blogs/${blog.id}`} >
+        <b style={{ display: "block" }}>{blog.title}</b>
+        <i style={{ display: "block" }}>{`by ${blog.author}`}</i>
 
-      <b style={{ display: "block" }}>{blog.title}</b>
-      <i style={{ display: "block" }}>{`by ${blog.author}`}</i>
+        <Togglable toggleLabels={{ labelShow: "Show details", labelHide: "Hide details" }}>
 
-      <Togglable toggleLabels={{ labelShow: "Show details", labelHide: "Hide details" }}>
+          <ul>
+            <li>
+              {`votes: ${blog.likes}`}
+              <button id="voteButton" type="button" onClick={() => dispatch(blogsVoteAction(blog.id))}>vote</button>
+            </li>
+            {blog.user !== null ? <li>{`submitted by ${blog.user.name}`}</li> : ""}
+            <li><a href={blog.url}>link</a></li>
+          </ul>
 
-        <ul>
-          <li>
-            {`votes: ${blog.likes}`}
-            <button id="voteButton" type="button" onClick={() => dispatch(blogsVoteAction(blog.id))}>vote</button>
-          </li>
-          {blog.user !== null ? <li>{`submitted by ${blog.user.name}`}</li> : ""}
-          <li><a href={blog.url}>link</a></li>
-        </ul>
+          {// render "remove" button only if submitter is logged in
+          (blog.user !== null && loggedInUser.username === blog.user.username)
+          && (
+          <button className="removeButton" type="button" onClick={removeClickHandler}>
+            Remove blog
+          </button>
+          )
+          }
 
-        {// render "remove" button only if submitter is logged in
-        (blog.user !== null && loggedInUser.username === blog.user.username)
-        && (
-        <button className="removeButton" type="button" onClick={removeClickHandler}>
-          Remove blog
-        </button>
-        )
-        }
-
-      </Togglable>
-
+        </Togglable>
+      </NavLink>
     </div>
   );
 };

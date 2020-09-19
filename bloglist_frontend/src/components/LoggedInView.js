@@ -1,7 +1,7 @@
-import React from "react";
-import Blog from "./Blog";
-import blogService from "../services/blogs";
-import LoggedInHeader from "../components/LoggedInHeader";
+import React from "react"
+import Blog from "./Blog"
+import blogService from "../services/blogs"
+import LoggedInHeader from "../components/LoggedInHeader"
 
 const LoggedInView = ({ user, blogs }) => {
 
